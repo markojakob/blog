@@ -1,39 +1,62 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
+@extends('partials.layout')
+@section('title', 'Reset Password')
+@section('content')
+<div class="card w-96 bg-base-100 shadow-xl mx-auto mt-8">
+    <div class="card-body">
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+        <!-- Info Text -->
+        <p class="mb-4 text-sm text-base-content">
+            {{ __('Reset your password by entering your email and new password.') }}
+        </p>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <form method="POST" action="{{ route('password.store') }}">
+            @csrf
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <!-- Password Reset Token -->
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <!-- Email Address -->
+            <fieldset class="fieldset mb-4">
+                <legend class="fieldset-legend">@lang('Email')</legend>
+                <input id="email" type="email" name="email" 
+                       class="input w-full" 
+                       value="{{ old('email', $request->email) }}" 
+                       placeholder="@lang('Email')" required autofocus />
+                @error('email')
+                    <p class="label text-error mt-1">{{ $message }}</p>
+                @enderror
+            </fieldset>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+            <!-- Password -->
+            <fieldset class="fieldset mb-4">
+                <legend class="fieldset-legend">@lang('Password')</legend>
+                <input id="password" type="password" name="password" 
+                       class="input w-full" 
+                       placeholder="@lang('Password')" required />
+                @error('password')
+                    <p class="label text-error mt-1">{{ $message }}</p>
+                @enderror
+            </fieldset>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+            <!-- Confirm Password -->
+            <fieldset class="fieldset mb-4">
+                <legend class="fieldset-legend">@lang('Confirm Password')</legend>
+                <input id="password_confirmation" type="password" name="password_confirmation" 
+                       class="input w-full" 
+                       placeholder="@lang('Confirm Password')" required />
+                @error('password_confirmation')
+                    <p class="label text-error mt-1">{{ $message }}</p>
+                @enderror
+            </fieldset>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+                <button type="submit" class="btn btn-primary">
+                    {{ __('Reset Password') }}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+@endsection
