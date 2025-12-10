@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
@@ -28,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/admin/posts/{post}/restore', [PostController::class, 'restore'])->name('posts.restore');
     Route::delete('/admin/posts/{post}/permadestroy', [PostController::class, 'permaDestroy'])->name('posts.permadestroy');
     Route::resource('/admin/posts', PostController::class);
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
+    ->name('comments.store')
+    ->middleware('auth');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

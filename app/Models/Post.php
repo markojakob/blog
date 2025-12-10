@@ -55,10 +55,16 @@ class Post extends Model
     }
 
     public function authHasLiked(): Attribute {
-        return Attribute::get(function () {
-            return $this->likes()->where('user_id', Auth::user()->id)->exists();
-        });
-    }
+    return Attribute::get(function () {
+        $user = Auth::user();
+
+        if (!$user) {
+            return false;
+        }
+
+        return $this->likes()->where('user_id', $user->id)->exists();
+    });
+}
 
     public function user() {
         return $this->belongsTo(User::class);
